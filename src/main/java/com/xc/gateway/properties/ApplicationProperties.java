@@ -1,4 +1,4 @@
-package com.xc.gateway.config;
+package com.xc.gateway.properties;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
