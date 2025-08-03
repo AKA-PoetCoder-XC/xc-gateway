@@ -24,17 +24,20 @@
     </properties>
 
     <dependencies>
-        <!-- 以下是启动cloud服务的最少依赖 -->
-        <!-- xc-cloud依赖 -->
-        <dependency>
-            <groupId>com.xc.boot</groupId>
-            <artifactId>xc-cloud-starter-core</artifactId>
-        </dependency>
-
         <!-- SpringCloud Gateway 网关-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <!-- 启动bootstrap依赖 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!-- 开启服务发现 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
         <!-- 以下是启动cloud服务的非必要依赖-->
