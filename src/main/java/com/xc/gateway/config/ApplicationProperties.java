@@ -11,29 +11,20 @@ import org.springframework.context.annotation.Configuration;
  * 配置中心配置信息
  * 
  * @author XieChen
- * @date 2024/12/04
+ * @date 2025/08/03
  */
 @Slf4j
 @Data
 @RefreshScope
 @Configuration
 @ConfigurationProperties(prefix = "xc")
-public class ApplicationConfig {
+public class ApplicationProperties {
 
-	private Nacos nacos;
+	private String remoteConfigName;
 
 	@PostConstruct
 	private void postConstruct() {
-		log.debug("工程配置 ApplicationConfig {}", this.toString());
+		log.info("工程配置 ApplicationConfig {}", this);
 	}
-
-	@Data
-	public static class Nacos {
-		private String serverAddr;
-		private String namespace;
-		private String username;
-		private String password;
-	}
-
 
 }

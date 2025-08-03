@@ -1,6 +1,8 @@
 # Tomcat
 server:
   port: 80
+  servlet:
+    context-path: /api
 
 # Spring
 spring:
@@ -9,30 +11,28 @@ spring:
     name: xc-gateway
   profiles:
     # 环境配置
-    active: local
+    active: dev
   cloud:
     nacos:
       server-addr: 192.168.1.93:8848
-      discovery:
-        namespace: public
     gateway:
       routes:
-        - id: xc-sample-service # 路由id，没有固定规则，只要唯一即可
-          uri: lb://xc-sample-service # 路由地址，会根据这个地址去注册中心查找同名服务
+        - id: xc-ai-service # 路由id，没有固定规则，只要唯一即可
+          uri: lb://xc-ai-service # 路由地址，会根据这个地址去注册中心查找同名服务
           predicates:
-            - Path=/xc-sample/** # 路由断言，匹配请求地址是否有这个前缀，如果匹配上，则转发到uri地址
-      discovery:
-        locator:
-          enabled: true # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
+            - Path=/xc-ai/** # 路由断言，匹配请求地址是否有这个前缀，如果匹配上，则转发到uri地址
+#      discovery:
+#        locator:
+#          enabled: true # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
 
-knife4j:
-  gateway:
-    # ① 第一个配置，开启gateway聚合组件
-    enabled: true
-    # ② 第二行配置，设置聚合模式采用discover服务发现的模式
-    strategy: discover
-    discover:
-      # ③ 第三行配置，开启discover模式
-      enabled: true
-      # ④ 第四行配置，聚合子服务全部为Swagger2规范的文档
-      version: OpenAPI3
+#knife4j:
+#  gateway:
+#    # ① 第一个配置，开启gateway聚合组件
+#    enabled: true
+#    # ② 第二行配置，设置聚合模式采用discover服务发现的模式
+#    strategy: discover
+#    discover:
+#      # ③ 第三行配置，开启discover模式
+#      enabled: true
+#      # ④ 第四行配置，聚合子服务全部为Swagger2规范的文档
+#      version: OpenAPI3
