@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 请求响应日志过滤器
+ * 自定义全局过滤器，用于打印请求和响应信息
  *
  * @author XieChen
  * @date 2025/08/03

@@ -36,8 +36,7 @@ spring:
           predicates:
             - name: Path # 对应 PathRoutePredicateFactory 断言工厂
               args:
-                patterns:
-                  - /api/xc-ai/** # 匹配路径,可以有多个
+                patterns: /api/xc-ai/** # 匹配路径,可以有多个
                 matchTrailingSlash: true # 默认是true, 表示/api/xc-ai/**/也能匹配上，如果是false则只会匹配/api/xc-ai/**
           # 过滤规则配置
           filters:
@@ -49,9 +48,15 @@ spring:
       default-filters:
         - name: AddResponseHeader # 对应 AddResponseHeaderGatewayFilterFactory 添加响应头过滤器工厂
           args:
-            name: X-Frame-Options
+            name:
             value: SAMEORIGIN
-
+      # 全局跨域配置
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: '*'
+            allowed-headers: '*'
+            allowed-methods: '*'
 
 #knife4j:
 #  gateway:
