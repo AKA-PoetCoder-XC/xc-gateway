@@ -13,14 +13,45 @@ spring:
     nacos:
       server-addr: 192.168.1.93:8848
     gateway:
+      # 路由规则配置，可配置断言和过滤器
       routes:
-        - id: xc-ai-service # 路由id，没有固定规则，只要唯一即可
-          uri: lb://xc-ai-service # 路由地址，会根据这个地址去注册中心查找同名服务
+        # 测试转发给bing的配置
+        - id: bing-route
+          uri: https://cn.bing.com
+          # 断言规则配置
           predicates:
-            - Path=/api/xc-ai/** # 路由断言，匹配请求地址是否有这个前缀，如果匹配上，则转发到uri地址
-#      discovery:
-#        locator:
-#          enabled: true # 开启从注册中心动态创建路由的功能，利用微服务名进行路由
+            - Path=/search # 短写法，下面是长写法
+            - name: Query # 对应 QueryRoutePredicateFactory 断言工厂，表示请求中必须包含某些请求参数
+              args:
+                param: q
+                regexp: .* # 表示这个参数必须满足该配置的正则表达式
+            - name: Admin # 对应自定义的 AdminRoutePredicateFactory 断言工厂，表示请求中必须包含配置中指定的请求参数
+              args:
+                param: user
+                value: xc
+        # xc-ai-service转发配置
+        - id: xc-ai-service # 路由id，没有固定规则，只要唯一即可
+          uri: lb://xc-ai-service # 路由地址，会根据这个地址去注册中心查找同名服务，lb表示负载均衡
+          # 断言规则配置
+          predicates:
+            - name: Path # 对应 PathRoutePredicateFactory 断言工厂
+              args:
+                patterns:
+                  - /api/xc-ai/** # 匹配路径,可以有多个
+                matchTrailingSlash: true # 默认是true, 表示/api/xc-ai/**/也能匹配上，如果是false则只会匹配/api/xc-ai/**
+          # 过滤规则配置
+          filters:
+            - name: RewritePath # 对应 RewritePathGatewayFilterFactory 重写路径过滤器工厂
+              args:
+                regexp: /api/xc-ai/?(?<segment>.*) # 匹配路径
+                replacement: /xc-ai/$\{segment} # 替换路径
+      # 配置默认过滤器
+      default-filters:
+        - name: AddResponseHeader # 对应 AddResponseHeaderGatewayFilterFactory 添加响应头过滤器工厂
+          args:
+            name: X-Frame-Options
+            value: SAMEORIGIN
+
 
 #knife4j:
 #  gateway:
