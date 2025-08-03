@@ -48,8 +48,8 @@ spring:
       default-filters:
         - name: AddResponseHeader # 对应 AddResponseHeaderGatewayFilterFactory 添加响应头过滤器工厂
           args:
-            name:
-            value: SAMEORIGIN
+            name: xc-flag
+            value: 1
       # 全局跨域配置
       globalcors:
         cors-configurations:
