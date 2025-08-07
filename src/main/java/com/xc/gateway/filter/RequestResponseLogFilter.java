@@ -61,7 +61,7 @@ public class RequestResponseLogFilter implements GlobalFilter, Ordered {
                             dataBuffer.read(content);
                             DataBufferUtils.release(dataBuffer);
                             String responseBody = new String(content, StandardCharsets.UTF_8);
-                            log.info("[RequestResponseLogFilter]收到响应: \nURI: {}, \nMethod: {}, \nResponse: {}",
+                            log.info("[RequestResponseLogFilter-writeWith]收到响应: \nURI: {}, \nMethod: {}, \nResponse: {}",
                                     path, method, responseBody);
                             return bufferFactory.wrap(content);
                         }));
@@ -122,7 +122,7 @@ public class RequestResponseLogFilter implements GlobalFilter, Ordered {
                                         dataBuffer.read(content);
                                         DataBufferUtils.release(dataBuffer);
                                         String responseBody = new String(content, StandardCharsets.UTF_8);
-                                        log.info("\n[RequestResponseLogFilter]收到响应: \nURI: {}, \nMethod: {}, \nResponse: {}",
+                                        log.info("\n[RequestResponseLogFilter-writeWith]收到响应: \nURI: {}, \nMethod: {}, \nResponse: {}",
                                                 path, method, responseBody);
                                         return bufferFactory.wrap(content);
                                     }));
