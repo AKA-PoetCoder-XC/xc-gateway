@@ -68,6 +68,21 @@ public class RequestResponseLogFilter implements GlobalFilter, Ordered {
                     }
                     return super.writeWith(body);
                 }
+
+                @Override
+                public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
+                    return super.writeAndFlushWith(Flux.from(body).map(dataBufferFlux ->
+                            Flux.from(dataBufferFlux).map(dataBuffer -> {
+                                byte[] content = new byte[dataBuffer.readableByteCount()];
+                                dataBuffer.read(content);
+                                DataBufferUtils.release(dataBuffer);
+                                String responseBody = new String(content, StandardCharsets.UTF_8);
+                                log.info("\n[RequestResponseLogFilter-writeAndFlushWith]收到响应: \nURI: {}, \nMethod: {}, \nResponse: {}",
+                                        path, method, responseBody);
+                                return bufferFactory.wrap(content);
+                            })
+                    ));
+                }
             };
             // 将修改过的response放入exchange
             return chain.filter(exchange.mutate().response(decoratedResponse).build());
@@ -113,6 +128,21 @@ public class RequestResponseLogFilter implements GlobalFilter, Ordered {
                                     }));
                                 }
                                 return super.writeWith(body);
+                            }
+
+                            @Override
+                            public Mono<Void> writeAndFlushWith(Publisher<? extends Publisher<? extends DataBuffer>> body) {
+                                return super.writeAndFlushWith(Flux.from(body).map(dataBufferFlux ->
+                                        Flux.from(dataBufferFlux).map(dataBuffer -> {
+                                            byte[] content = new byte[dataBuffer.readableByteCount()];
+                                            dataBuffer.read(content);
+                                            DataBufferUtils.release(dataBuffer);
+                                            String responseBody = new String(content, StandardCharsets.UTF_8);
+                                            log.info("\n[RequestResponseLogFilter-writeAndFlushWith]收到响应: \nURI: {}, \nMethod: {}, \nResponse: {}",
+                                                    path, method, responseBody);
+                                            return bufferFactory.wrap(content);
+                                        })
+                                ));
                             }
                         };
                         // 将修改过的request和response放入exchange
