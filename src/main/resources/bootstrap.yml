@@ -11,7 +11,8 @@ spring:
     active: dev
   cloud:
     nacos:
-      server-addr: 192.168.1.93:8848
+#      server-addr: 192.168.1.93:8848
+      server-addr: http://192.168.28.2:8848/
     gateway:
       # 路由规则配置，可配置断言和过滤器
       routes:
@@ -44,6 +45,12 @@ spring:
               args:
                 regexp: /api/xc-ai/?(?<segment>.*) # 匹配路径
                 replacement: /xc-ai/$\{segment} # 替换路径
+        - id: xc-auth-service
+          uri: lb://xc-auth-service
+          predicates:
+            - name: Path
+              args:
+                patterns: /api/xc-auth/**
       # 配置默认过滤器
       default-filters:
         - name: AddResponseHeader # 对应 AddResponseHeaderGatewayFilterFactory 添加响应头过滤器工厂
