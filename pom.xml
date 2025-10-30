@@ -51,14 +51,9 @@
         </dependency>
 
         <!-- 以下是启动cloud服务的非必要依赖-->
-        <!-- lombok依赖 -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
+            <groupId>com.xc.boot</groupId>
+            <artifactId>xc-boot-core</artifactId>
         </dependency>
 <!--        &lt;!&ndash; knife4j依赖(gateway聚合文档专用) &ndash;&gt;-->
 <!--        <dependency>-->
