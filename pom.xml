@@ -54,6 +54,16 @@
         <dependency>
             <groupId>com.xc.boot</groupId>
             <artifactId>xc-boot-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-openfeign</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--        &lt;!&ndash; knife4j依赖(gateway聚合文档专用) &ndash;&gt;-->
 <!--        <dependency>-->
