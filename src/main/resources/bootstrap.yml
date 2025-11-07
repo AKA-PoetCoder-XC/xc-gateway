@@ -51,6 +51,12 @@ spring:
             - name: Path
               args:
                 patterns: /api/xc-auth/**
+        - id: xc-biz-service
+          uri: lb://xc-biz-service
+          predicates:
+            - name: Path
+              args:
+                patterns: /api/xc-biz/**
       # 配置默认过滤器
       default-filters:
         - name: AddResponseHeader # 对应 AddResponseHeaderGatewayFilterFactory 添加响应头过滤器工厂

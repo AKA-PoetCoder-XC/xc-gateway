@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 /**
  * 权限控制过滤器
  * 
- * @author ZhongLing
+ * @author XieChen
  * @date 2023/08/11
  */
 @Slf4j
@@ -38,7 +38,7 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 		String path = exchange.getRequest().getURI().getPath();
 		log.info("[AuthorizationFilter] path:{}", path);
-		// 跳过openPath
+		// 跳过白名单
 		if (match(path)) {
 			return chain.filter(exchange);
 		}
@@ -79,7 +79,9 @@ public class AuthorizationFilter implements GlobalFilter, Ordered {
 
 	boolean match(String path) {
 		PathMatcher pathMatcher = new AntPathMatcher();
-        return !pathMatcher.match("/api/open/**", path);
-    }
+		return pathMatcher.match("/api/open/**", path) ||
+				pathMatcher.match("/api/xc-auth/user/wechat-login", path);
+	}
+
 
 }
